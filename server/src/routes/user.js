@@ -14,7 +14,7 @@ userRouter.get("/", verifyTokenAndAdmin, async (req, res) => {
     }
 })
 
-userRouter.get("/find/:id", async (req, res) => {
+userRouter.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
     try {
         const user = await findUserByIdController(req.params.id);
         res.status(200).json(user);
@@ -35,7 +35,7 @@ userRouter.get("/stats", verifyTokenAndAdmin, async (req, res) => {
     };
 });
 
-userRouter.put("/:id", async (req, res) => {
+userRouter.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
     try {
         if(req.body.password) {
             req.body.password = await hashUserPasswordController(req.body.password);

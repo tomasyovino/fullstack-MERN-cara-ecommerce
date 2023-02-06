@@ -4,7 +4,7 @@ import { findAllOrdersController, findOrdersByUserIdController, getOrdersStatsCo
 
 const orderRouter = Router();
 
-orderRouter.get("/", async (req, res) => {
+orderRouter.get("/", verifyTokenAndAdmin, async (req, res) => {
     try {
         const query = req.query.new;
         const orders = await findAllOrdersController(query);
@@ -14,7 +14,7 @@ orderRouter.get("/", async (req, res) => {
     };
 });
 
-orderRouter.get("/find/:userId", async (req, res) => {
+orderRouter.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
     try {
         const query = req.query.new;
         const orders = await findOrdersByUserIdController(req.params.userId, query);
@@ -37,7 +37,7 @@ orderRouter.get("/income", verifyTokenAndAdmin, async (req, res) => {
     };
 });
 
-orderRouter.post("/", async (req, res) => {
+orderRouter.post("/", verifyTokenAndAuthorization, async (req, res) => {
     try {
         const order = await createOrderController(req.body);
         res.status(200).json(order);
